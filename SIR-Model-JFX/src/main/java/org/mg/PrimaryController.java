@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
@@ -22,6 +23,10 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private LineChart<Double, Double> lineChart;
+
+    private XYChart.Series susceptibleSeries;
+    private XYChart.Series infectedSeries;
+    private XYChart.Series removedSeries;
 
     // Slider Labels
 
@@ -60,8 +65,15 @@ public class PrimaryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        susceptibleSeries = new XYChart.Series();
+        infectedSeries = new XYChart.Series<>();
+        removedSeries = new XYChart.Series<>();
+
+        lineChart.getData().addAll(susceptibleSeries, infectedSeries, removedSeries);
+
         lineChartXAxis.setAutoRanging(false);
         lineChartYAxis.setAutoRanging(false);
+        lineChart.setLegendVisible(false);
 
         // Make labels change with slider values
 
@@ -72,7 +84,7 @@ public class PrimaryController implements Initializable {
 
         susceptiblePop.valueProperty().addListener((ob, ov, nv) -> { susceptiblePopLabel.setText("Susceptible: "+nv.intValue()); });
         infectedPop.valueProperty().addListener((ob, ov, nv) -> { infectedPopLabel.setText("Infected: "+nv.intValue()); });
-        rateOfInfection.valueProperty().addListener((ob, ov, nv) -> { rateOfInfectionLabel.setText("Rate of Infection: "+Math.round(nv.doubleValue()*100000.0)/100000.0); });
+        rateOfInfection.valueProperty().addListener((ob, ov, nv) -> { rateOfInfectionLabel.setText("Rate of Infection: "+Math.round(nv.doubleValue()*100.0)/100.0); });
         rateOfRemoval.valueProperty().addListener((ob, ov, nv) -> { rateOfRemovalLabel.setText("Rate of Removal: "+Math.round(nv.doubleValue()*100.0)/100.0); });
 
         // Set initial values
