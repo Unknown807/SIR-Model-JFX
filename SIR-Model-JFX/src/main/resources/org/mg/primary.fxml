@@ -26,7 +26,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Slider fx:id="maxTime">
+            <Slider fx:id="maxTimeSlider">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -39,7 +39,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <Slider fx:id="susceptiblePop" layoutX="10.0" layoutY="27.0">
+            <Slider fx:id="susceptiblePopSlider" layoutX="10.0" layoutY="27.0">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -52,7 +52,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <Slider fx:id="infectedPop" layoutX="10.0" layoutY="58.0">
+            <Slider fx:id="infectedPopSlider" layoutX="10.0" layoutY="58.0">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -65,7 +65,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <Slider fx:id="rateOfInfection" layoutX="10.0" layoutY="89.0" max="2.0">
+            <Slider fx:id="rateOfInfectionSlider" layoutX="10.0" layoutY="89.0" max="2.0">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -78,7 +78,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <Slider fx:id="rateOfRemoval" layoutX="10.0" layoutY="120.0" max="1.0">
+            <Slider fx:id="rateOfRemovalSlider" layoutX="10.0" layoutY="120.0" max="1.0">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -107,7 +107,7 @@
             <HBox minHeight="-Infinity" prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Label text="Susceptible" textFill="#260eff">
+                  <Label fx:id="susceptibleLegendItem" text="Susceptible">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -115,7 +115,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Infected" textFill="#ff0404">
+                  <Label fx:id="infectedLegendItem" text="Infected">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -123,7 +123,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Removed" textFill="LIME">
+                  <Label fx:id="removedLegendItem" text="Removed">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>

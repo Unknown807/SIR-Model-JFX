@@ -48,24 +48,36 @@ public class PrimaryController implements Initializable {
     // Sliders
 
     @FXML
-    private Slider maxTime;
+    private Slider maxTimeSlider;
 
     @FXML
-    private Slider susceptiblePop;
+    private Slider susceptiblePopSlider;
 
     @FXML
-    private Slider infectedPop;
+    private Slider infectedPopSlider;
 
     @FXML
-    private Slider rateOfInfection;
+    private Slider rateOfInfectionSlider;
 
     @FXML
-    private Slider rateOfRemoval;
+    private Slider rateOfRemovalSlider;
+
+    // variables
+
+    int maxTime;
+
+    int maxPop = 100;
+    int susceptiblePop;
+    int infectedPop;
+
+    double rateOfInfection;
+    double rateOfRemoval;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         susceptibleSeries = new XYChart.Series();
+
         infectedSeries = new XYChart.Series<>();
         removedSeries = new XYChart.Series<>();
 
@@ -74,26 +86,83 @@ public class PrimaryController implements Initializable {
         lineChartXAxis.setAutoRanging(false);
         lineChartYAxis.setAutoRanging(false);
         lineChart.setLegendVisible(false);
+        lineChart.setCreateSymbols(false);
+        lineChart.setAnimated(false);
 
         // Make labels change with slider values
 
-        maxTime.valueProperty().addListener((ob, ov, nv) -> {
-            maxTimeLabel.setText("Total Time: "+nv.intValue());
-            lineChartXAxis.setUpperBound(nv.intValue());
+        maxTimeSlider.valueProperty().addListener((ob, ov, nv) -> {
+            maxTime = nv.intValue();
+            maxTimeLabel.setText("Total Time: "+maxTime);
+            lineChartXAxis.setUpperBound(maxTime);
         });
 
-        susceptiblePop.valueProperty().addListener((ob, ov, nv) -> { susceptiblePopLabel.setText("Susceptible: "+nv.intValue()); });
-        infectedPop.valueProperty().addListener((ob, ov, nv) -> { infectedPopLabel.setText("Infected: "+nv.intValue()); });
-        rateOfInfection.valueProperty().addListener((ob, ov, nv) -> { rateOfInfectionLabel.setText("Rate of Infection: "+Math.round(nv.doubleValue()*100.0)/100.0); });
-        rateOfRemoval.valueProperty().addListener((ob, ov, nv) -> { rateOfRemovalLabel.setText("Rate of Removal: "+Math.round(nv.doubleValue()*100.0)/100.0); });
+        susceptiblePopSlider.valueProperty().addListener((ob, ov, nv) -> {
+            susceptiblePop = nv.intValue();
+            susceptiblePopLabel.setText("Susceptible: "+susceptiblePop);
+            infectedPopSlider.setValue(maxPop-susceptiblePop);
+            drawLines();
+        });
+
+        infectedPopSlider.valueProperty().addListener((ob, ov, nv) -> {
+            infectedPop = nv.intValue();
+            infectedPopLabel.setText("Infected: "+infectedPop);
+            susceptiblePopSlider.setValue(maxPop-infectedPop);
+            drawLines();
+        });
+
+        rateOfInfectionSlider.valueProperty().addListener((ob, ov, nv) -> {
+            rateOfInfection = Math.round(nv.doubleValue()*100.0)/100.0;
+            rateOfInfectionLabel.setText("Rate of Infection: "+rateOfInfection);
+            drawLines();
+        });
+
+        rateOfRemovalSlider.valueProperty().addListener((ob, ov, nv) -> {
+            rateOfRemoval = Math.round(nv.doubleValue()*100.0)/100.0;
+            rateOfRemovalLabel.setText("Rate of Removal: "+rateOfRemoval);
+            drawLines();
+        });
 
         // Set initial values
 
-        maxTime.setValue(maxTime.getMax());
-        susceptiblePop.setValue(susceptiblePop.getMax()/2);
-        infectedPop.setValue(infectedPop.getMax()/4);
-        rateOfInfection.setValue(rateOfInfection.getMax()/2);
-        rateOfRemoval.setValue(rateOfRemoval.getMax()/3);
+        maxTimeSlider.setValue(maxTimeSlider.getMax());
+        susceptiblePopSlider.setValue(susceptiblePopSlider.getMax()/2);
+        infectedPopSlider.setValue(infectedPopSlider.getMax()/6);
+        rateOfInfectionSlider.setValue(rateOfInfectionSlider.getMax()/2);
+        rateOfRemovalSlider.setValue(rateOfRemovalSlider.getMax()/3);
 
+    }
+
+    public void drawLines() {
+
+        susceptibleSeries.getData().clear();
+        infectedSeries.getData().clear();
+        removedSeries.getData().clear();
+
+        double susceptiblePopTemp = susceptiblePop;
+        double infectedPopTemp = infectedPop;
+        double removedPop = 0;
+
+        double dS;
+        double newS;
+        double newI;
+        double newR;
+
+        for (int t=0; t<maxTime; t++) {
+
+            susceptibleSeries.getData().add(new XYChart.Data<>(t, susceptiblePopTemp));
+            infectedSeries.getData().add(new XYChart.Data<>(t, infectedPopTemp));
+            removedSeries.getData().add(new XYChart.Data<>(t, removedPop));
+
+            dS = (rateOfInfection*susceptiblePopTemp*infectedPopTemp)/maxPop;
+            newS = susceptiblePopTemp - dS;
+            newI = (infectedPopTemp + dS - rateOfRemoval * infectedPopTemp);
+            newR = (removedPop + rateOfRemoval * infectedPopTemp);
+
+            susceptiblePopTemp = newS;
+            infectedPopTemp = newI;
+            removedPop = newR;
+
+        }
     }
 }
