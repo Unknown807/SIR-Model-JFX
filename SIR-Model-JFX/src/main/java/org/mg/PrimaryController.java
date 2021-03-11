@@ -7,6 +7,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -62,6 +63,17 @@ public class PrimaryController implements Initializable {
     @FXML
     private Slider rateOfRemovalSlider;
 
+    // Fields
+
+    @FXML
+    private TextField maxTimeField;
+
+    @FXML
+    private TextField maxPopField;
+
+    @FXML
+    private TextField maxInfectionRateField;
+
     // variables
 
     int maxTime;
@@ -112,13 +124,13 @@ public class PrimaryController implements Initializable {
         });
 
         rateOfInfectionSlider.valueProperty().addListener((ob, ov, nv) -> {
-            rateOfInfection = Math.round(nv.doubleValue()*100.0)/100.0;
+            rateOfInfection = roundNum2DP(nv.doubleValue());
             rateOfInfectionLabel.setText("Rate of Infection: "+rateOfInfection);
             drawLines();
         });
 
         rateOfRemovalSlider.valueProperty().addListener((ob, ov, nv) -> {
-            rateOfRemoval = Math.round(nv.doubleValue()*100.0)/100.0;
+            rateOfRemoval = roundNum2DP(nv.doubleValue());
             rateOfRemovalLabel.setText("Rate of Removal: "+rateOfRemoval);
             drawLines();
         });
@@ -131,6 +143,42 @@ public class PrimaryController implements Initializable {
         rateOfInfectionSlider.setValue(rateOfInfectionSlider.getMax()/2);
         rateOfRemovalSlider.setValue(rateOfRemovalSlider.getMax()/3);
 
+    }
+
+    @FXML
+    public void submitFields() {
+        String newMT = maxTimeField.getText();
+        String newMP = maxPopField.getText();
+        String newMIR = maxInfectionRateField.getText();
+
+        // If the field is valid then it can be used, otherwise skip
+
+        if (validateField(newMT)) {
+            maxTime = Integer.parseInt(newMT);
+            maxTimeSlider.setMax(maxTime);
+        }
+
+        if (validateField(newMP)) {
+            maxPop = Integer.parseInt(newMP);
+            susceptiblePopSlider.setMax(maxPop);
+            infectedPopSlider.setMax(maxPop);
+            lineChartYAxis.setUpperBound(maxPop);
+        }
+
+        if (validateField(newMIR)) {
+            rateOfInfectionSlider.setMax(Integer.parseInt(newMIR));
+        }
+
+        drawLines();
+
+    }
+
+    public double roundNum2DP(double num) {
+        return Math.round(num*100.0)/100.0;
+    }
+
+    public boolean validateField(String field) {
+        return (!field.isBlank() && field.matches("\\d+"));
     }
 
     public void drawLines() {
