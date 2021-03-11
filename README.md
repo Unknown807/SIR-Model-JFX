@@ -1,14 +1,14 @@
 # SIR-Model-JFX
 JDK 15.0.1
-# Dependencies
+## Dependencies
 * javafx-fxml - 15.0.1
 * javafx-controls - 15.0.1
 * javafx-graphics - 15.0.1
-# Description
+## Description
 This program is meant to model and slightly animate infectious diseases, as explained in wikipedia on how the SIR model works https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model_2
 The program uses the formulas from the above article instead of running a simulation:
 
-# How to Use
+## How to Use
 
 When the program starts it will have some default values and max values for the sliders.
 
