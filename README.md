@@ -5,7 +5,7 @@ JDK 15.0.1
 * javafx-controls - 15.0.1
 * javafx-graphics - 15.0.1
 ## Description
-This program is meant to model and slightly animate infectious diseases, as explained in wikipedia on how the SIR model works https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model_2
+This program is meant to model and slightly animate infectious diseases, as explained on <a href="https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology#The_SIR_model_2">wikipedia</a> on how the SIR model works.
 The program uses the formulas from the above article instead of running a simulation:
 
 ## How to Use
